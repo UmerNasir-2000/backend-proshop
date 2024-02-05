@@ -9,8 +9,12 @@ export class ProductService {
     @InjectModel(Product.name) private readonly productModel: Model<Product>,
   ) {}
 
-  create(product: Product) {
+  create(product: Product): Promise<Product> {
     const createdProduct = new this.productModel(product);
     return createdProduct.save();
+  }
+
+  findAll(): Promise<Product[]> {
+    return this.productModel.find().exec();
   }
 }
