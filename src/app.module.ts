@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/proshop'),
+    ConfigModule.forRoot({ isGlobal: true, expandVariables: true }),
+    MongooseModule.forRoot(process.env.MONGO_URI!),
     ProductModule,
   ],
   providers: [],
