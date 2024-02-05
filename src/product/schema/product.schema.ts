@@ -1,12 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
+import slugify from 'slugify';
 
 @Schema({ timestamps: true, versionKey: false })
 class Product {
   @Prop({ required: true, unique: true })
   title: string;
 
-  @Prop({ unique: true, lowercase: true })
+  @Prop({ unique: true })
   slug: string;
 
   @Prop({ required: true })
@@ -25,5 +26,12 @@ class Product {
 export type ProductDocument = HydratedDocument<Product>;
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
+
+ProductSchema.pre('save', function (next) {
+  if (!this.slug) {
+    this.slug = slugify(this.title);
+  }
+  next();
+});
 
 export default Product;
