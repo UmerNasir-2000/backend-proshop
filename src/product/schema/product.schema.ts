@@ -28,9 +28,7 @@ export type ProductDocument = HydratedDocument<Product>;
 export const ProductSchema = SchemaFactory.createForClass(Product);
 
 ProductSchema.pre('save', function (next) {
-  if (!this.slug) {
-    this.slug = slugify(this.title);
-  }
+  this.slug = slugify(this.title);
   next();
 });
 
